@@ -87,9 +87,9 @@ Material:
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
-    - _FlatRimEdgeSmoothness: 0.5
-    - _FlatRimLightAlign: 0.1
-    - _FlatRimSize: 0.5
+    - _FlatRimEdgeSmoothness: 0.336
+    - _FlatRimLightAlign: 0
+    - _FlatRimSize: 0.32
     - _FlatSpecularEdgeSmoothness: 0
     - _FlatSpecularSize: 0.1
     - _Flatness: 1
