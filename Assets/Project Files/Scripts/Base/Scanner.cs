@@ -26,11 +26,8 @@ public class Scanner : MonoBehaviour
         Collider[] hits = Physics.OverlapSphere(transform.position, _scanRadius, _layerMask);
 
         foreach (Collider hit in hits)
-        {
-            hit.TryGetComponent(out Resource resource);
-
-            _resources.Add(resource);
-        }
+            if(hit.TryGetComponent(out Resource resource))
+                _resources.Add(resource);
     }
 
     private IEnumerator ScanRoutine()
