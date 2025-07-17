@@ -48,9 +48,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _resourcePool: {fileID: 0}
   _spawnPoint: {fileID: 4166785650004887915}
-  _delay: 2
-  _spawnOffsetY: 2
-  _capacity: 3
+  _delay: 8
+  _spawnOffsetY: 5
+  _capacity: 5
 --- !u!1 &3162883144599288278
 GameObject:
   m_ObjectHideFlags: 0
