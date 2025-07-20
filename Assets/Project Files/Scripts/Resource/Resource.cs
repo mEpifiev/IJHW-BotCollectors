@@ -4,20 +4,14 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class Resource : MonoBehaviour
 {
-    public Rigidbody Rigidbody { get; private set; }
-
     public event Action<Resource> Released;
 
+    public Rigidbody Rigidbody { get; private set; }
 
     private void Awake()
     {
         Rigidbody = GetComponent<Rigidbody>();
-    }
-
-    private void Reset()
-    {
-        Rigidbody.isKinematic = false;
-    }
+    }    
 
     public void DisablePhysics()
     {
@@ -28,5 +22,10 @@ public class Resource : MonoBehaviour
     {
         Reset();
         Released?.Invoke(this);
+    }
+
+    private void Reset()
+    {
+        Rigidbody.isKinematic = false;
     }
 }
