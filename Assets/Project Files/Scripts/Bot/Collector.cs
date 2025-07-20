@@ -4,30 +4,33 @@ public class Collector : MonoBehaviour
 {
     [SerializeField] private Transform _holder;
 
-    private Resource _currentResource;
-
-    public bool HaveResource => _currentResource != null;
+    public Resource CurrentResource { get; private set; }
+    public bool HaveResource => CurrentResource != null;
 
     public bool TryCollect(Resource resource)
     {
-        if (resource == null || _currentResource != null)
+        if (resource == null || CurrentResource != null)
             return false;
 
-        _currentResource = resource;
-        _currentResource.DisablePhysics();
-        _currentResource.transform.SetParent(_holder);
-        _currentResource.transform.localPosition = Vector3.zero; 
+        CurrentResource = resource;
+        CurrentResource.DisablePhysics();
+        CurrentResource.transform.SetParent(_holder);
+        CurrentResource.transform.localPosition = Vector3.zero; 
 
         return true;
     }
 
-    public void Drop(Vector3 newPosition)
+    public Resource Drop(Vector3 newPosition)
     {
-        if (_currentResource == null)
-            return;
+        if (CurrentResource == null)
+            return null;
 
-        _currentResource.transform.position = newPosition;
-        _currentResource.transform.SetParent(null);
-        _currentResource = null;
+        Resource resource = CurrentResource;
+
+        CurrentResource.transform.position = newPosition;
+        CurrentResource.transform.SetParent(null);
+        CurrentResource = null;
+
+        return resource;
     }
 }

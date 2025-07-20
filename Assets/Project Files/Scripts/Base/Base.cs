@@ -5,6 +5,8 @@ using UnityEngine;
 public class Base : MonoBehaviour
 {
     [SerializeField] private ResourceDispatcher _resourceDispatcher;
+    [SerializeField] private CollectorZone _collectorZone;
+    [SerializeField] private ResourceCounter _resourceCounter;
     [SerializeField] private BotSpawner _botSpawner;
     [SerializeField] private Transform _dropResourcePoint;
     [SerializeField] private int _initialBotCount = 3;
@@ -17,6 +19,16 @@ public class Base : MonoBehaviour
         _bots = _botSpawner.Spawn(_initialBotCount);
 
         StartCoroutine(AssignTaskBotRoutine());
+    }
+
+    private void OnEnable()
+    {
+        _collectorZone.BotEntered += OnTaskBotCompleted;
+    }
+
+    private void OnDisable()
+    {
+        _collectorZone.BotEntered -= OnTaskBotCompleted;
     }
 
     private IEnumerator AssignTaskBotRoutine()
@@ -38,5 +50,13 @@ public class Base : MonoBehaviour
 
             yield return wait;
         }
+    }
+
+    private void OnTaskBotCompleted(Bot bot, Resource resource)
+    {
+        _resourceDispatcher.RemoveResource(resource);
+        _resourceCounter.Add();
+        bot.GiveResource(_dropResourcePoint.position);
+        resource.Release();
     }
 }

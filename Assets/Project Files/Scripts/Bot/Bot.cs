@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 [RequireComponent(typeof(Mover))]
 [RequireComponent(typeof(Collector))]
@@ -8,17 +9,16 @@ public class Bot : MonoBehaviour
     [SerializeField] private float _collectionDelay = 0.5f;
 
     private Mover _mover;
-    private Collector _collector;
-    private Resource _currentResource;
+    private Resource _ñurrentResource;
     private Vector3 _resourceDropPoint;
-    private bool _isAssigned;
 
-    public bool IsAssigned => _isAssigned;
+    public Collector Collector { get; private set; }
+    public bool IsAssigned { get; private set; }
 
     private void Awake()
     {
         _mover = GetComponent<Mover>();
-        _collector = GetComponent<Collector>();
+        Collector = GetComponent<Collector>();
     }
 
     private void OnEnable()
@@ -33,26 +33,28 @@ public class Bot : MonoBehaviour
 
     public void AssignTask(Resource resource, Transform dropPoint)
     {
-        if (_isAssigned || resource == null || dropPoint == null)
+        if (IsAssigned || resource == null || dropPoint == null)
             return;
 
-        _currentResource = resource;
+        _ñurrentResource = resource;
         _resourceDropPoint = dropPoint.position;
-        _isAssigned = true;
+        IsAssigned = true;
 
         _mover.MoveTo(resource.transform.position);
     }
 
+    public Resource GiveResource(Vector3 position)
+    {
+        IsAssigned = false;
+
+        return Collector.Drop(position);
+    }
+
     private void OnDestinationReached(Vector3 position)
     {
-        if(_collector.HaveResource == false && _currentResource != null)
+        if(Collector.HaveResource == false && _ñurrentResource != null)
         {
             StartCoroutine(CollectResource());
-        }
-        else if(_collector.HaveResource)
-        {
-            _collector.Drop(position);
-            _isAssigned = false;
         }
     }
 
@@ -60,14 +62,14 @@ public class Bot : MonoBehaviour
     {
         yield return new WaitForSeconds(_collectionDelay);
 
-        if(_collector.TryCollect(_currentResource))
+        if(Collector.TryCollect(_ñurrentResource))
         {
             _mover.MoveTo(_resourceDropPoint);
-            _currentResource = null;
+            _ñurrentResource = null;
         }
         else
         {
-            _isAssigned = false;
+            IsAssigned = false;
         }
     }
 }

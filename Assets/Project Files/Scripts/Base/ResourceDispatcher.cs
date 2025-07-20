@@ -41,22 +41,15 @@ public class ResourceDispatcher : MonoBehaviour
         return closestResource;
     }
 
-    private void AddResources(List<Resource> resources)
-    {
-        foreach (Resource resource in resources)
-        {
-            if (_scannedResources.Contains(resource))
-                continue;
-
-            _scannedResources.Add(resource);
-            resource.Released += OnResourceReleased;
-        }
-    }
-
-    private void OnResourceReleased(Resource resource)
+    public void RemoveResource(Resource resource)
     {
         _assignedResources.Remove(resource);
         _scannedResources.Remove(resource);
-        resource.Released -= OnResourceReleased;
+    }
+
+    private void AddResources(List<Resource> resources)
+    {
+        _scannedResources.Clear();
+        _scannedResources.AddRange(resources);
     }
 }

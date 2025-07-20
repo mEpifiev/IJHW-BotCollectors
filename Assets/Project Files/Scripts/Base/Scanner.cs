@@ -11,6 +11,8 @@ public class Scanner : MonoBehaviour
 
     private List<Resource> _resources = new();
 
+    private Collider[] _resourcesBuffer = new Collider[10];
+
     public event Action<List<Resource>> ResourceScanned;
 
     private void Start()
@@ -20,14 +22,17 @@ public class Scanner : MonoBehaviour
 
     private void Scan()
     {
-        if(_resources.Count != 0)
-            _resources.Clear();
+        _resources.Clear();
 
-        Collider[] hits = Physics.OverlapSphere(transform.position, _scanRadius, _layerMask);
+        int hitCount = Physics.OverlapSphereNonAlloc(transform.position, _scanRadius, _resourcesBuffer, _layerMask);
 
-        foreach (Collider hit in hits)
-            if(hit.TryGetComponent(out Resource resource))
+        for (int i = 0; i < hitCount; i++)
+        {
+            Collider collider = _resourcesBuffer[i];
+
+            if(collider.TryGetComponent(out Resource resource))
                 _resources.Add(resource);
+        }
     }
 
     private IEnumerator ScanRoutine()

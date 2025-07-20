@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class CrystalCounter : MonoBehaviour
+public class ResourceCounter : MonoBehaviour
 {
     private int _count = 0;
 

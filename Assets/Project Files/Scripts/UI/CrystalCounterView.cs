@@ -1,16 +1,16 @@
 ﻿using TMPro;
 using UnityEngine;
 
-[RequireComponent(typeof(CrystalCounter))]
+[RequireComponent(typeof(ResourceCounter))]
 public class CrystalCounterView : MonoBehaviour
 {
     [SerializeField] private TMP_Text _view;
 
-    private CrystalCounter _counter;
+    private ResourceCounter _counter;
 
     private void Awake()
     {
-        _counter = GetComponent<CrystalCounter>();
+        _counter = GetComponent<ResourceCounter>();
     }
 
     private void OnEnable()
